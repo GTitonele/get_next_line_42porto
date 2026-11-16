@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guilherme <guilherme@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gbaccell <gbaccell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 12:09:19 by gbaccell          #+#    #+#             */
-/*   Updated: 2026/11/13 18:15:54 by guilherme        ###   ########.fr       */
+/*   Updated: 2026/11/16 15:50:56 by gbaccell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
