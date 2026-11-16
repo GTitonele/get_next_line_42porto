@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guilherme <guilherme@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gbaccell <gbaccell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 12:09:14 by gbaccell          #+#    #+#             */
-/*   Updated: 2026/11/13 18:46:57 by guilherme        ###   ########.fr       */
+/*   Updated: 2026/11/16 12:14:38 by gbaccell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	*get_next_line(int fd)
 {
 	static char	*stash[MAX_FD];
 	char		*line;
+	int			has_rest;
 
 	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -89,6 +90,12 @@ char	*get_next_line(int fd)
 		stash[fd] = NULL;
 		return (NULL);
 	}
+	has_rest = (stash[fd][ft_strlen(line)] != '\0');
 	stash[fd] = ft_new_stash(stash[fd]);
+	if (has_rest && stash[fd] == NULL)
+	{
+		free(line);
+		return (NULL);
+	}
 	return (line);
 }

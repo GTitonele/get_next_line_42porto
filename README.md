@@ -171,6 +171,7 @@ Each call to `get_next_line()` does three things:
    first `\n` (or up to the end, on the last line). This is the returned line.
 3. **`ft_new_stash`**: keeps only what comes after that `\n` for the next call and frees the
    old stash. If nothing is left, the stash becomes `NULL`.
+
 ### Why this approach?
 
 - **Reads as little as possible.** The loop stops at the first newline, as the subject asks.
@@ -184,6 +185,8 @@ Each call to `get_next_line()` does three things:
   leaked when it grows. All error cases in `ft_read_stash` (failed `malloc`, `read` returning
   `-1`, failed `ft_strjoin`) leave the loop with `break` and are handled in one single place
   at the end of the function, which frees what is left and returns `NULL`.
+  `get_next_line` also checks whether a leftover was expected (`has_rest`): if saving it
+  fails, the line is freed and `NULL` is returned instead of silently losing data.
 
 ### Known limitations
 
@@ -192,9 +195,6 @@ Each call to `get_next_line()` does three things:
   about n² / (2 × `BUFFER_SIZE`) copied bytes. It is fast in normal use, but the
   `francinette --strict` malloc-failure test on a 20 000-character line with `BUFFER_SIZE=10`
   times out for this reason (the results themselves are correct and leak-free).
-- **`malloc` failure in `ft_new_stash`.** If allocating the leftover fails, the current line is
-  still returned correctly, but the leftover is lost and the next call continues from the
-  current file position. The subject does not define this case.
 
 ### Bonus: several file descriptors
 
@@ -234,7 +234,8 @@ AI (Claude) was used throughout the project as a tutor:
 - **Debugging:** the AI helped analyse a `francinette --strict` failure and found that a failed
   `malloc` inside `ft_strjoin` made the function return a wrong line instead of `NULL`.
   The restructured error handling in `ft_read_stash` and the bonus version of
-  `get_next_line` (array of stashes indexed by fd) were proposed by the AI with
-  explanations, then reviewed, typed and tested by me.- **Testing and documentation:** help designing test cases (different `BUFFER_SIZE` values,
+  `get_next_line` (array of stashes indexed by fd, `has_rest` check) were proposed by the AI with
+  explanations, then reviewed, typed and tested by me.
+- **Testing and documentation:** help designing test cases (different `BUFFER_SIZE` values,
   empty files, files without a final `\n`, standard input, invalid fd, several fds,
   `valgrind`) and writing this README.
